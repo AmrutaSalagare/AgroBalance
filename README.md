@@ -14,7 +14,7 @@ An intelligent system for precision farming that provides crop recommendations a
 1. Clone the repository:
 
    ```bash
-   git clone <repository-url>
+   git clone <[repository-url](https://github.com/AmrutaSalagare/AgroBalance.git)>
    cd agricultural-assistant
    ```
 
@@ -102,3 +102,4 @@ This will read and display raw sensor readings to verify proper hardware communi
 └── templates/                  # HTML templates
     └── index.html
 ```
+
