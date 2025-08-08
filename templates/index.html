@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Agricultural Assistant</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      :root {
+        --primary: #2ecc71;
+        --primary-dark: #27ae60;
+        --secondary: #3498db;
+        --text: #2c3e50;
+        --light-bg: #ecf0f1;
+        --card-bg: #ffffff;
+        --danger: #e74c3c;
+        --success: #2ecc71;
+        --warning: #f39c12;
+        --border-radius: 8px;
+        --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: var(--light-bg);
+        color: var(--text);
+        line-height: 1.6;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      header {
+        background-color: var(--primary);
+        padding: 20px 0;
+        color: white;
+        box-shadow: var(--shadow);
+      }
+
+      .header-content {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 20px;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .logo i {
+        font-size: 2.5rem;
+      }
+
+      h1 {
+        font-size: 1.8rem;
+        font-weight: 600;
+      }
+
+      main {
+        margin: 40px 0;
+      }
+
+      .card {
+        background-color: var(--card-bg);
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+        padding: 25px;
+        margin-bottom: 30px;
+      }
+
+      .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid var(--light-bg);
+      }
+
+      h2 {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 1.4rem;
+        font-weight: 600;
+        color: var(--primary-dark);
+      }
+
+      .sensor-controls {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 25px;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background-color: var(--primary);
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        border-radius: var(--border-radius);
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: 500;
+        transition: all 0.2s ease;
+      }
+
+      .btn:hover {
+        background-color: var(--primary-dark);
+        transform: translateY(-2px);
+      }
+
+      .btn-secondary {
+        background-color: var(--secondary);
+      }
+
+      .btn-large {
+        padding: 14px 30px;
+        font-size: 1.1rem;
+      }
+
+      #sensor-status {
+        padding: 10px 15px;
+        border-radius: var(--border-radius);
+        font-weight: 500;
+      }
+
+      #sensor-status.success {
+        background-color: rgba(46, 204, 113, 0.15);
+        color: var(--success);
+      }
+
+      #sensor-status.error {
+        background-color: rgba(231, 76, 60, 0.15);
+        color: var(--danger);
+      }
+
+      #sensor-status.loading {
+        background-color: rgba(243, 156, 18, 0.15);
+        color: var(--warning);
+      }
+
+      .form-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 25px;
+      }
+
+      .form-group {
+        margin-bottom: 5px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+        color: var(--text);
+      }
+
+      input,
+      select {
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid #ddd;
+        border-radius: var(--border-radius);
+        font-size: 1rem;
+        transition: border-color 0.2s;
+      }
+
+      input:focus,
+      select:focus {
+        border-color: var(--primary);
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.2);
+      }
+
+      input.sensor-data {
+        background-color: rgba(46, 204, 113, 0.1);
+        border-color: var(--primary);
+      }
+
+      .submit-btn {
+        text-align: right;
+        margin-top: 30px;
+      }
+
+      .error-message {
+        background-color: rgba(231, 76, 60, 0.15);
+        color: var(--danger);
+        padding: 15px;
+        border-radius: var(--border-radius);
+        margin-bottom: 20px;
+      }
+
+      .results {
+        margin-top: 40px;
+      }
+
+      .result-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 20px;
+        margin-top: 25px;
+      }
+
+      .result-card {
+        background-color: var(--card-bg);
+        border-radius: var(--border-radius);
+        padding: 25px;
+        box-shadow: var(--shadow);
+        text-align: center;
+        transition: transform 0.3s;
+      }
+
+      .result-card:hover {
+        transform: translateY(-5px);
+      }
+
+      .result-icon {
+        font-size: 3rem;
+        color: var(--primary);
+        margin-bottom: 15px;
+      }
+
+      .result-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 12px;
+        color: var(--text);
+      }
+
+      .result-value {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: var(--primary-dark);
+        margin-bottom: 15px;
+      }
+
+      .result-details {
+        font-size: 1rem;
+        color: var(--text);
+      }
+
+      footer {
+        text-align: center;
+        padding: 20px;
+        color: #7f8c8d;
+        font-size: 0.9rem;
+      }
+
+      @media (max-width: 768px) {
+        .form-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .logo i {
+          font-size: 2rem;
+        }
+
+        h1 {
+          font-size: 1.5rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="header-content container">
+        <div class="logo">
+          <i class="fas fa-seedling"></i>
+          <h1>Agricultural Assistant</h1>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      {% if error %}
+      <div class="error-message">
+        <i class="fas fa-exclamation-circle"></i> {{ error }}
+      </div>
+      {% endif %}
+
+      <form action="/predict" method="post">
+        <!-- Hidden field to track if sensor is used -->
+        <input
+          type="hidden"
+          id="sensor-used"
+          name="sensor_used"
+          value="false"
+        />
+
+        <!-- Hidden fields to store sensor data -->
+        <input type="hidden" id="sensor-n" name="N" />
+        <input type="hidden" id="sensor-p" name="P" />
+        <input type="hidden" id="sensor-k" name="K" />
+        <input type="hidden" id="sensor-temp" name="Temperature" />
+        <input type="hidden" id="sensor-ph" name="pH" />
+        <input type="hidden" id="sensor-moisture" name="Moisture" />
+
+        <div class="card">
+          <div class="card-header">
+            <h2><i class="fas fa-microchip"></i> Soil Sensor</h2>
+          </div>
+
+          <div class="sensor-controls">
+            <button type="button" id="read-sensor-btn" class="btn">
+              <i class="fas fa-sync"></i> Read from Sensor
+            </button>
+            <div id="sensor-status"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h2><i class="fas fa-flask"></i> Soil Properties</h2>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="n"
+                ><i class="fas fa-leaf"></i> Nitrogen (N) mg/kg:</label
+              >
+              <input
+                type="number"
+                id="n"
+                name="N"
+                min="0"
+                max="200"
+                step="0.1"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="p"
+                ><i class="fas fa-leaf"></i> Phosphorus (P) mg/kg:</label
+              >
+              <input
+                type="number"
+                id="p"
+                name="P"
+                min="0"
+                max="200"
+                step="0.1"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="k"
+                ><i class="fas fa-leaf"></i> Potassium (K) mg/kg:</label
+              >
+              <input
+                type="number"
+                id="k"
+                name="K"
+                min="0"
+                max="200"
+                step="0.1"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="ph"><i class="fas fa-tint"></i> pH:</label>
+              <input
+                type="number"
+                id="ph"
+                name="pH"
+                min="0"
+                max="14"
+                step="0.1"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="moisture"
+                ><i class="fas fa-water"></i> Moisture (%):</label
+              >
+              <input
+                type="number"
+                id="moisture"
+                name="Moisture"
+                min="0"
+                max="100"
+                step="0.1"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="soil-type"
+                ><i class="fas fa-mountain"></i> Soil Type:</label
+              >
+              <select id="soil-type" name="Soil Type" required>
+                <option value="Sandy">Sandy</option>
+                <option value="Loamy">Loamy</option>
+                <option value="Clayey">Clayey</option>
+                <option value="Black">Black</option>
+                <option value="Red">Red</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h2><i class="fas fa-cloud-sun"></i> Environmental Factors</h2>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="temperature"
+                ><i class="fas fa-thermometer-half"></i> Temperature
+                (°C):</label
+              >
+              <input
+                type="number"
+                id="temperature"
+                name="Temperature"
+                min="0"
+                max="50"
+                step="0.1"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="humidity"
+                ><i class="fas fa-tint"></i> Humidity (%):</label
+              >
+              <input
+                type="number"
+                id="humidity"
+                name="Humidity"
+                min="0"
+                max="100"
+                step="0.1"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="rainfall"
+                ><i class="fas fa-cloud-rain"></i> Rainfall (mm):</label
+              >
+              <input
+                type="number"
+                id="rainfall"
+                name="Rainfall"
+                min="0"
+                max="3000"
+                step="0.1"
+                required
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="submit-btn">
+          <button type="submit" class="btn btn-large">
+            <i class="fas fa-calculator"></i> Get Recommendations
+          </button>
+        </div>
+      </form>
+
+      {% if results %}
+      <div class="results">
+        <div class="card">
+          <div class="card-header">
+            <h2><i class="fas fa-chart-bar"></i> Recommendations</h2>
+          </div>
+
+          <div class="result-cards">
+            <div class="result-card">
+              <div class="result-icon">
+                <i class="fas fa-seedling"></i>
+              </div>
+              <div class="result-title">Recommended Crop</div>
+              <div class="result-value">{{ results.crop }}</div>
+              <div class="result-details">
+                Based on your soil analysis and environmental conditions
+              </div>
+            </div>
+
+            <div class="result-card">
+              <div class="result-icon">
+                <i class="fas fa-flask"></i>
+              </div>
+              <div class="result-title">Recommended Fertilizer</div>
+              <div class="result-value">{{ results.fertilizer }}</div>
+              <div class="result-details">
+                Optimal for your soil and chosen crop
+              </div>
+            </div>
+
+            <div class="result-card">
+              <div class="result-icon">
+                <i class="fas fa-weight"></i>
+              </div>
+              <div class="result-title">Application Rate</div>
+              <div class="result-value">{{ results.amount }}</div>
+              <div class="result-details">
+                Ensure proper distribution for best results
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+    </main>
+
+    <footer>
+      <p>&copy; 2025 Agricultural Assistant | Smart Farming Solutions</p>
+    </footer>
+
+    <script>
+      document
+        .getElementById("read-sensor-btn")
+        .addEventListener("click", function () {
+          const statusDiv = document.getElementById("sensor-status");
+          statusDiv.innerHTML =
+            '<i class="fas fa-spinner fa-spin"></i> Reading sensor data...';
+          statusDiv.className = "loading";
+
+          fetch("/read_sensor")
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.success) {
+                // Fill visible form fields
+                document.getElementById("n").value = data.data.N;
+                document.getElementById("p").value = data.data.P;
+                document.getElementById("k").value = data.data.K;
+                document.getElementById("temperature").value =
+                  data.data.Temperature;
+                document.getElementById("ph").value = data.data.pH;
+                document.getElementById("moisture").value = data.data.Moisture;
+
+                // Also fill hidden fields that will be submitted
+                document.getElementById("sensor-n").value = data.data.N;
+                document.getElementById("sensor-p").value = data.data.P;
+                document.getElementById("sensor-k").value = data.data.K;
+                document.getElementById("sensor-temp").value =
+                  data.data.Temperature;
+                document.getElementById("sensor-ph").value = data.data.pH;
+                document.getElementById("sensor-moisture").value =
+                  data.data.Moisture;
+
+                // Mark visually that fields are from sensor
+                document.getElementById("n").classList.add("sensor-data");
+                document.getElementById("p").classList.add("sensor-data");
+                document.getElementById("k").classList.add("sensor-data");
+                document
+                  .getElementById("temperature")
+                  .classList.add("sensor-data");
+                document.getElementById("ph").classList.add("sensor-data");
+                document
+                  .getElementById("moisture")
+                  .classList.add("sensor-data");
+
+                // Mark that we're using sensor data
+                document.getElementById("sensor-used").value = "true";
+
+                statusDiv.innerHTML =
+                  '<i class="fas fa-check-circle"></i> Sensor data loaded successfully!';
+                statusDiv.className = "success";
+              } else {
+                statusDiv.innerHTML =
+                  '<i class="fas fa-exclamation-triangle"></i> Error reading sensor: ' +
+                  data.error;
+                statusDiv.className = "error";
+                document.getElementById("sensor-used").value = "false";
+              }
+            })
+            .catch((error) => {
+              statusDiv.innerHTML =
+                '<i class="fas fa-exclamation-triangle"></i> Network error: ' +
+                error;
+              statusDiv.className = "error";
+              document.getElementById("sensor-used").value = "false";
+            });
+        });
+    </script>
+  </body>
+</html>
